@@ -19,6 +19,7 @@ namespace RTS
         int miliseconds = 0;
         int lastToggle = 0;
         const int TOGGLE_TIME = 3000;
+        int lastClick = 0;
 
         Game_Player.Viewport viewport;
         Sprite sprite;
@@ -113,6 +114,11 @@ namespace RTS
             sprite.Rotation += 0.01;
             if (sprite.X > Graphics.ScreenWidth) sprite.X = 0;
             if (sprite.Y > Graphics.ScreenHeight) sprite.Y = 0;
+
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                lastClick = gameTime.ElapsedGameTime.Milliseconds;
+            }
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {

@@ -15,7 +15,10 @@ namespace RTS
         {
             Bitmap bmp = new Bitmap(50, 50);
             bmp.FillEllipse(25, 25, 50, 50, new Game_Player.Color(255, 255, 255));
-            bmp.FillRect(0, 0, 10, 10, new Game_Player.Color(255, 0, 0));
+            bmp.FillEllipse(8, 8, 16, 16, new Game_Player.Color(255, 255, 255));
+            bmp.FillEllipse(8, 42, 16, 16, new Game_Player.Color(255, 255, 255));
+            bmp.FillEllipse(42, 8, 16, 16, new Game_Player.Color(255, 255, 255));
+            bmp.FillEllipse(42, 42, 16, 16, new Game_Player.Color(255, 255, 255));
             this.Bitmap = bmp;
             ZoomX = ZoomY = 2;
             OX = Bitmap.Width / 2;
