@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Game_Player;
 using System;
+using System.Collections.Generic;
 
 namespace RTS
 {
@@ -35,6 +36,8 @@ namespace RTS
 
             Content.RootDirectory = "Content";
             Paths.Root = "Content/";
+
+            IsMouseVisible = true;
 
             viewport = new Game_Player.Viewport(0, 0, Graphics.ScreenWidth, Graphics.ScreenHeight);
             sprite = new Sprite(viewport, new Bitmap("elmo"));
@@ -113,12 +116,13 @@ namespace RTS
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-                Bitmap bmp = new Bitmap(50, 50);
-                bmp.FillEllipse(25, 25, 50, 50, new Game_Player.Color(255, 0, 255));
-                Sprite ball = new Sprite(viewport, bmp);
+                WeirdBall ball = new WeirdBall(viewport);
                 ball.X = Mouse.GetState().X;
                 ball.Y = Mouse.GetState().Y;
+                ball.Z = viewport.Sprites.Count;
             }
+
+            viewport.Sprites.ForEach(sprite => sprite.Update());
 
             base.Update(gameTime);
         }

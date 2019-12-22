@@ -622,7 +622,7 @@ namespace Game_Player
                     windowSprites[i].Z += 1;
 
                 windowSprites[i].Visible = Visible;
-                windowSprites[i].Opactiy = BackOpacity * Opacity / 255;
+                windowSprites[i].Opacity = BackOpacity * Opacity / 255;
 
                 if (updateSprite)
                     windowSprites[i].Update();
@@ -654,14 +654,14 @@ namespace Game_Player
                 if (Active)
                 {
                     if (cursorState >= CURSOR_STATES)
-                        cursorSprites[i].Opactiy = (int)(perc * (255 - MIN_CURSOR_OPACITY) + MIN_CURSOR_OPACITY);
+                        cursorSprites[i].Opacity = (int)(perc * (255 - MIN_CURSOR_OPACITY) + MIN_CURSOR_OPACITY);
                     else
-                        cursorSprites[i].Opactiy = (int)((1 - perc) * (255 - MIN_CURSOR_OPACITY) + MIN_CURSOR_OPACITY);
+                        cursorSprites[i].Opacity = (int)((1 - perc) * (255 - MIN_CURSOR_OPACITY) + MIN_CURSOR_OPACITY);
                     
-                    cursorSprites[i].Opactiy *= Opacity / 255;
+                    cursorSprites[i].Opacity *= Opacity / 255;
                 }
                 else
-                    cursorSprites[i].Opactiy = Opacity;
+                    cursorSprites[i].Opacity = Opacity;
 
                 if (i == (int)Sides.Center)
                     cursorSprites[i].Z = Z + 4;
@@ -702,7 +702,7 @@ namespace Game_Player
             contentsSprite.BmpSourceRect = new Rect(oX, oY, rWidth, rHeight);
             contentsSprite.Z = Z + 3;
             contentsSprite.Visible = Visible;
-            contentsSprite.Opactiy = ContentsOpacity * Opacity / 255;
+            contentsSprite.Opacity = ContentsOpacity * Opacity / 255;
             
             if (updateSprite)
                 contentsSprite.Update();
@@ -731,7 +731,7 @@ namespace Game_Player
             arrowSprite.Y = Y + Height - arrowSprite.Height;
             arrowSprite.Z = Z + 2;
             arrowSprite.Visible = Visible && Paused;
-            arrowSprite.Opactiy = Opacity;
+            arrowSprite.Opacity = Opacity;
 
             if (updateSprite)
                 arrowSprite.Update();

@@ -371,14 +371,14 @@ namespace Game_Player
                         continue;
 
                     totalAlpha = sprite.Color.Alpha + sprite.Viewport.Color.Alpha;
-                    if (totalAlpha == 0) { color = new Microsoft.Xna.Framework.Color(255, 255, 255, sprite.Opactiy); }
+                    if (totalAlpha == 0) { color = new Microsoft.Xna.Framework.Color(255, 255, 255, sprite.Opacity); }
                     else
                     {
                         color = new Microsoft.Xna.Framework.Color(
                             (byte)((sprite.Color.Red * sprite.Color.Alpha + viewport.Color.Red * viewport.Color.Alpha) / totalAlpha),
                             (byte)((sprite.Color.Green * sprite.Color.Alpha + viewport.Color.Green * viewport.Color.Alpha) / totalAlpha),
                             (byte)((sprite.Color.Blue * sprite.Color.Alpha + viewport.Color.Blue * viewport.Color.Alpha) / totalAlpha),
-                            (byte)(sprite.Opactiy));
+                            (byte)(sprite.Opacity));
                     }
 
                     color.R += (byte)(sprite.Tone.Red + viewport.Tone.Red);

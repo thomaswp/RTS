@@ -182,7 +182,7 @@ namespace Game_Player
         /// opacity of 1.0 means the sprite fully covers the pixels underneath it, an opacity of 0.5 would 
         /// blend the two layers of pixels, while with an opactiy of 0.0 the Sprite would be fully transparent.
         /// </summary>
-        public int Opactiy
+        public int Opacity
         {
             get { return opactiy; }
             set { opactiy = value.MinMax(0, 255); }
