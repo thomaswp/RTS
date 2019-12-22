@@ -332,7 +332,7 @@ namespace Game_Player
         //    get { return bubbleRadius; }
         //    set { bubbleRadius = value; }
         //}
-#endregion
+        #endregion
 
         /// <summary>
         /// Defines the sprite. Dimensions can be defined by a 

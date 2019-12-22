@@ -63,8 +63,8 @@ namespace RTS
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             Graphics.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            //Graphics.Effects = Content.Load<Effect>("Effects");
-            //Graphics.TransEffect = Content.Load<Effect>("Trans");
+            Graphics.Effects = Content.Load<Effect>("Effects");
+            Graphics.TransEffect = Content.Load<Effect>("Trans");
             // TODO: use this.Content to load your game content here
         }
 

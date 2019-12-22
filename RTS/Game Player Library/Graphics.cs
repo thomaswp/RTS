@@ -316,7 +316,7 @@ namespace Game_Player
         /// Microsoft.Xna.Framework.Graphics.SpriteBatch</see> used to draw the frame.</param>
         public static Texture2D Draw(bool textureOut)
         {
-            if (Frozen || GraphicsDevice == null || DeviceManager == null || SpriteBatch == null) // || Effects == null)
+            if (Frozen || GraphicsDevice == null || DeviceManager == null || SpriteBatch == null || Effects == null)
                 return lastFrame;
 
             if (!viewportsMap.ContainsKey(Viewport.Default))
@@ -429,16 +429,16 @@ namespace Game_Player
                         (sprite.BlendType == 2);
 
 
-                    /**
-                    DeviceManager.GraphicsDevice.Textures[1] = texture;
-                    Effects.Parameters["width"].SetValue(sprite.Width);
-                    Effects.Parameters["height"].SetValue(sprite.Height);
-                    Effects.Parameters["bushDepth"].SetValue(sprite.BushDepth);
-                    Effects.Parameters["blur"].SetValue(sprite.Blur);
-                    Effects.Parameters["bubbleX"].SetValue(sprite.Bubble.X);
-                    Effects.Parameters["bubbleY"].SetValue(sprite.Bubble.Y);
-                    Effects.Parameters["bubbleRad"].SetValue((sprite.BubbleRadius));
-                    **/
+                    
+                    //DeviceManager.GraphicsDevice.Textures[1] = texture;
+                    //Effects.Parameters["width"].SetValue(sprite.Width);
+                    //Effects.Parameters["height"].SetValue(sprite.Height);
+                    //Effects.Parameters["bushDepth"].SetValue(sprite.BushDepth);
+                    //Effects.Parameters["blur"].SetValue(sprite.Blur);
+                    //Effects.Parameters["bubbleX"].SetValue(sprite.Bubble.X);
+                    //Effects.Parameters["bubbleY"].SetValue(sprite.Bubble.Y);
+                    //Effects.Parameters["bubbleRad"].SetValue((sprite.BubbleRadius));
+                    
 
                     if (blendState != lastBlendState)
                     {
