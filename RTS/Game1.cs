@@ -111,6 +111,14 @@ namespace RTS
             if (sprite.X > Graphics.ScreenWidth) sprite.X = 0;
             if (sprite.Y > Graphics.ScreenHeight) sprite.Y = 0;
 
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                Bitmap bmp = new Bitmap(50, 50);
+                bmp.FillEllipse(25, 25, 50, 50, new Game_Player.Color(255, 0, 255));
+                Sprite ball = new Sprite(viewport, bmp);
+                ball.X = Mouse.GetState().X;
+                ball.Y = Mouse.GetState().Y;
+            }
 
             base.Update(gameTime);
         }
