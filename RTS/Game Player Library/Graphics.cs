@@ -454,7 +454,10 @@ namespace Game_Player
                     {
                         SpriteBatch.End();
                         SpriteBatch.Begin(SpriteSortMode.Immediate, blendState);
-                        Effects.CurrentTechnique.Passes[0].Apply();
+
+                        // TODO: The Effects shader is still messed up, at least for rotation/scaling
+                        // so we can't use it right now
+                        //Effects.CurrentTechnique.Passes[0].Apply();
                     }
                     
                     try
