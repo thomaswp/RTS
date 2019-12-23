@@ -124,8 +124,12 @@ namespace RTS
             if (sprite.Y > Graphics.ScreenHeight) spriteYSpeed *= -1;
             if (spriteYSpeed < 0 && sprite.Y < 1) spriteYSpeed *= -1;
 
-            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right)) rotationSpeed += .0001;
-            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left)) rotationSpeed -= .0001;
+            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt)) rotationSpeed += .0001;
+            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl)) rotationSpeed -= .0001;
+            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up)) { spriteYSpeed -= 1; }
+            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Down)) { spriteYSpeed += 1; }
+            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left)) { spriteXSpeed -= 1; }
+            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right)) { spriteXSpeed += 1; }
 
 
             // Click detection
