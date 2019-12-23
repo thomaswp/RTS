@@ -19,7 +19,10 @@ namespace RTS
         int miliseconds = 0;
         int lastToggle = 0;
         const int TOGGLE_TIME = 3000;
-        int lastClick = 0;
+        MouseState currentMouseState;
+        MouseState lastMouseState;
+        int spriteSpeed = 3;
+        int rotationDirection = 1;
 
         Game_Player.Viewport viewport;
         Sprite sprite;
@@ -97,7 +100,7 @@ namespace RTS
                 this.TargetElapsedTime = new TimeSpan((long)Math.Pow(10, 7) / FPS);
             }
 
-
+            // Fullscreen logic
             if (lastToggle < TOGGLE_TIME)
                 lastToggle += gameTime.ElapsedGameTime.Milliseconds;
             if ((Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt) ||
@@ -109,18 +112,27 @@ namespace RTS
                 lastToggle = 0;
             }
 
-            sprite.X += 3;
-            sprite.Y += 2;
-            sprite.Rotation += 0.01;
+            // Elmo
+            sprite.X += spriteSpeed * (3/2);
+            sprite.Y += spriteSpeed;
+            sprite.Z = viewport.Sprites.Count;
+            sprite.Rotation += 0.01 * rotationDirection;
             if (sprite.X > Graphics.ScreenWidth) sprite.X = 0;
             if (sprite.Y > Graphics.ScreenHeight) sprite.Y = 0;
 
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+
+            // Click detection
+            lastMouseState = currentMouseState;
+            currentMouseState = Mouse.GetState();
+
+            if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
             {
-                lastClick = gameTime.ElapsedGameTime.Milliseconds;
+                rotationDirection *= -1;
             }
 
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+
+            // Snake
+            if (currentMouseState.LeftButton == ButtonState.Pressed)
             {
                 WeirdBall ball = new WeirdBall(viewport);
                 ball.X = Mouse.GetState().X;
