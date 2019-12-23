@@ -132,10 +132,13 @@ namespace RTS
             {
                 //rotationDirection *= -1;
                 // arrow keys to rotate, delete all sprites except elmo on click
-                // Two ways, either create your own list of sprites-to-delete and delete all of them (call .Dispose() I think)
-                // or you could look through all of viewport.Sprites and only dispose the ones that you don't like
-                // viewport.Sprites.Clear(); // check if things in viewport.sprites *is* weirdball, .dispose if so (.sprites.foreach?)
-                //viewport.Sprites.ForEach(sprite.Rotation *= -1);
+                // viewport.Sprites.ForEach(sprite => sprite.ZoomX += 1);
+                // viewport.Sprites.ForEach(WeirdBall => WeirdBall.Dispose());
+                // viewport.Sprites.RemoveAll(is WeirdBall);
+                // viewport.Sprites.RemoveAt(0);
+                // if (viewport.Sprites.Count > 1) viewport.Sprites.RemoveRange(1, viewport.Sprites.Count - 1);
+                // viewport.Sprites.Where(s => s is WeirdSprite).ForEach(s => s.Dispose())
+                foreach (Sprite sprite in viewport.Sprites) { if (sprite is WeirdBall) { sprite.Dispose(); } }
             }
 
 
