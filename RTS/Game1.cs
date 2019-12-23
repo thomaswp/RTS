@@ -21,7 +21,8 @@ namespace RTS
         const int TOGGLE_TIME = 3000;
         MouseState currentMouseState;
         MouseState lastMouseState;
-        int spriteSpeed = 3;
+        int spriteXSpeed = 3;
+        int spriteYSpeed = 3;
         int rotationDirection = 1;
 
         Game_Player.Viewport viewport;
@@ -113,12 +114,14 @@ namespace RTS
             }
 
             // Elmo
-            sprite.X += spriteSpeed * (3/2);
-            sprite.Y += spriteSpeed;
+            sprite.X += spriteXSpeed * (3/2);
+            sprite.Y += spriteYSpeed;
             sprite.Z = viewport.Sprites.Count;
             sprite.Rotation += 0.01 * rotationDirection;
-            if (sprite.X > Graphics.ScreenWidth) sprite.X = 0;
-            if (sprite.Y > Graphics.ScreenHeight) sprite.Y = 0;
+            if (sprite.X > Graphics.ScreenWidth) spriteXSpeed *= -1;
+            if (spriteXSpeed < 0 && sprite.X < 1) spriteXSpeed *= -1;
+            if (sprite.Y > Graphics.ScreenHeight) spriteYSpeed *= -1;
+            if (spriteYSpeed < 0 && sprite.Y < 1) spriteYSpeed *= -1;
 
 
             // Click detection
@@ -127,7 +130,12 @@ namespace RTS
 
             if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
             {
-                rotationDirection *= -1;
+                //rotationDirection *= -1;
+                // arrow keys to rotate, delete all sprites except elmo on click
+                // Two ways, either create your own list of sprites-to-delete and delete all of them (call .Dispose() I think)
+                // or you could look through all of viewport.Sprites and only dispose the ones that you don't like
+                // viewport.Sprites.Clear(); // check if things in viewport.sprites *is* weirdball, .dispose if so (.sprites.foreach?)
+                //viewport.Sprites.ForEach(sprite.Rotation *= -1);
             }
 
 
