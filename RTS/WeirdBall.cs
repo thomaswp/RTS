@@ -9,7 +9,8 @@ namespace RTS
 {
     class WeirdBall : Sprite
     {
-        int colorTick;
+        int lifeTick;
+        const int LIFE = 5000;
 
         public WeirdBall(Viewport viewport) : base(viewport)
         {
@@ -33,7 +34,18 @@ namespace RTS
             Rotation += 0.01;
             // Set the color to a hue-saturation-lightness color, based on the
             // number of frames that have passed since creation
-            Color = new HSLColor((colorTick++ % 240), 240.0, 120.0);
+            lifeTick++;
+            Color = new HSLColor((lifeTick++ % 240), 240.0, 120.0);
+            // degrades opacity from 1 to 0 over the course of LIFE
+            //if (lifeTick < LIFE)
+            //{
+            //    this.Opacity = (LIFE - lifeTick) / 255;
+            //}
+            //else
+            //{
+            //    this.Dispose();
+            //}
+            
         }
     }
 }

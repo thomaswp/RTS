@@ -24,6 +24,7 @@ namespace RTS
         int spriteXSpeed = 3;
         int spriteYSpeed = 3;
         int rotationDirection = 1;
+        double rotationSpeed = .01;
 
         Game_Player.Viewport viewport;
         Sprite sprite;
@@ -117,11 +118,14 @@ namespace RTS
             sprite.X += spriteXSpeed * (3/2);
             sprite.Y += spriteYSpeed;
             sprite.Z = viewport.Sprites.Count;
-            sprite.Rotation += 0.01 * rotationDirection;
+            sprite.Rotation += rotationSpeed * rotationDirection;
             if (sprite.X > Graphics.ScreenWidth) spriteXSpeed *= -1;
             if (spriteXSpeed < 0 && sprite.X < 1) spriteXSpeed *= -1;
             if (sprite.Y > Graphics.ScreenHeight) spriteYSpeed *= -1;
             if (spriteYSpeed < 0 && sprite.Y < 1) spriteYSpeed *= -1;
+
+            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right)) rotationSpeed += .0001;
+            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left)) rotationSpeed -= .0001;
 
 
             // Click detection
@@ -138,7 +142,7 @@ namespace RTS
                 // viewport.Sprites.RemoveAt(0);
                 // if (viewport.Sprites.Count > 1) viewport.Sprites.RemoveRange(1, viewport.Sprites.Count - 1);
                 // viewport.Sprites.Where(s => s is WeirdSprite).ForEach(s => s.Dispose())
-                foreach (Sprite sprite in viewport.Sprites) { if (sprite is WeirdBall) { sprite.Dispose(); } }
+                foreach (Sprite sprite in viewport.Sprites) { if (sprite is WeirdBall) { sprite.Dispose(); } }               
             }
 
 
