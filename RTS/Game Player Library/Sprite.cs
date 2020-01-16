@@ -178,9 +178,9 @@ namespace Game_Player
 
         protected int opactiy = 255;
         /// <summary>
-        /// Gets or sets the opactiy of this Sprite. Ranges from 0.0 to 1.0. For example, an 
-        /// opacity of 1.0 means the sprite fully covers the pixels underneath it, an opacity of 0.5 would 
-        /// blend the two layers of pixels, while with an opactiy of 0.0 the Sprite would be fully transparent.
+        /// Gets or sets the opactiy of this Sprite. Ranges from 0 to 255. For example, an 
+        /// opacity of 255 means the sprite fully covers the pixels underneath it, an opacity of 123 would 
+        /// blend the two layers of pixels, while with an opactiy of 0 the Sprite would be fully transparent.
         /// </summary>
         public int Opacity
         {

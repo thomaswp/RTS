@@ -30,7 +30,7 @@ namespace RTS
         public override void Update()
         {
             base.Update();
-
+            Opacity -= 2;
             Rotation += 0.01;
             // Set the color to a hue-saturation-lightness color, based on the
             // number of frames that have passed since creation
@@ -45,7 +45,7 @@ namespace RTS
             //{
             //    this.Dispose();
             //}
-            
+            if (Opacity == 0) Dispose();
         }
     }
 }

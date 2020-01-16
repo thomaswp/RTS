@@ -377,13 +377,14 @@ namespace Game_Player
                         color = new Microsoft.Xna.Framework.Color(
                             (byte)((sprite.Color.Red * sprite.Color.Alpha + viewport.Color.Red * viewport.Color.Alpha) / totalAlpha),
                             (byte)((sprite.Color.Green * sprite.Color.Alpha + viewport.Color.Green * viewport.Color.Alpha) / totalAlpha),
-                            (byte)((sprite.Color.Blue * sprite.Color.Alpha + viewport.Color.Blue * viewport.Color.Alpha) / totalAlpha),
-                            (byte)(sprite.Opacity));
+                            (byte)((sprite.Color.Blue * sprite.Color.Alpha + viewport.Color.Blue * viewport.Color.Alpha) / totalAlpha));
                     }
 
                     color.R += (byte)(sprite.Tone.Red + viewport.Tone.Red);
                     color.G += (byte)(sprite.Tone.Green + viewport.Tone.Green);
                     color.B += (byte)(sprite.Tone.Blue + viewport.Tone.Blue);
+
+                    if (sprite.Opacity < 255) color *= sprite.Opacity / 255f;
 
                     Rect rect = sprite.Rect;
                     rect.X -= viewport.OX;
@@ -425,7 +426,7 @@ namespace Game_Player
                     EffectBlendType = sprite.BlendType;
                     bool useEffect = 
                         (sprite.Tone.Gray + viewport.Tone.Gray > 0) ||
-                        (color != Colors.White.ToXNAColor()) ||
+                        // (color != Colors.White.ToXNAColor()) ||
                         (sprite.BlendType == 2);
 
 
