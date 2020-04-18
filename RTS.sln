@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.12
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTS", "RTS\RTS.csproj", "{30586ABD-5D5C-4D27-9AB6-7CBDEA58F74A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePlayerLibrary", "GamePlayerLibrary\GamePlayerLibrary.csproj", "{09F6EB1F-5DB8-48B9-862E-AC0B57A1B1D5}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		GamePlayerLibrary\GamePlayerLibrary.projitems*{30586abd-5d5c-4d27-9ab6-7cbdea58f74a}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
@@ -15,8 +20,15 @@ Global
 		{30586ABD-5D5C-4D27-9AB6-7CBDEA58F74A}.Debug|x86.Build.0 = Debug|x86
 		{30586ABD-5D5C-4D27-9AB6-7CBDEA58F74A}.Release|x86.ActiveCfg = Release|x86
 		{30586ABD-5D5C-4D27-9AB6-7CBDEA58F74A}.Release|x86.Build.0 = Release|x86
+		{09F6EB1F-5DB8-48B9-862E-AC0B57A1B1D5}.Debug|x86.ActiveCfg = Debug|x86
+		{09F6EB1F-5DB8-48B9-862E-AC0B57A1B1D5}.Debug|x86.Build.0 = Debug|x86
+		{09F6EB1F-5DB8-48B9-862E-AC0B57A1B1D5}.Release|x86.ActiveCfg = Release|x86
+		{09F6EB1F-5DB8-48B9-862E-AC0B57A1B1D5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {176E4C28-996A-48A3-A9F7-119822A6D122}
 	EndGlobalSection
 EndGlobal

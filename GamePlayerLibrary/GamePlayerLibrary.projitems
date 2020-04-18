@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>ced21ef5-a17b-4b05-aa60-1746592e3c4a</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>GamePlayerLibrary</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Bitmap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\BitmapVisualizer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Bridge.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Code.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Color.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Colors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Graphics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\HSLColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Input.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\MsgBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Paths.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Plane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Point.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Rand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Rect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Sprite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Tilemap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Tone.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Utils\UsageData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Viewport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game Player Library\Window.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Content\Effects.fx" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\elmo.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)Content\Trans.fx" />
+  </ItemGroup>
+</Project>

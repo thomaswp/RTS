@@ -104,6 +104,7 @@ namespace Game_Player
                 for (int j = 0; j < paths.Length; j++)
                 {
                     string path = paths[j] + filename + extentions[i];
+                    //Console.WriteLine(Path.GetFullPath(path));
                     if (File.Exists(path))
                         return path;
                 }
