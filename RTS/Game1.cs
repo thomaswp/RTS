@@ -3,7 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Game_Player;
 using System;
+using HearthData;
 using System.Collections.Generic;
+using System.IO;
 
 namespace RTS
 {
@@ -31,13 +33,18 @@ namespace RTS
 
         public Game1()
         {
+            HearthData.Game.LoadAll();
+            string json = File.ReadAllText("C:/Users/Thomas/Documents/GitHub/RTS/game.json");
+            HearthData.Game game = ObjectEditor.Json.JsonSerializer.fromJson<HearthData.Game>(json);
+            Console.WriteLine(game.name);
 
             graphics = new GraphicsDeviceManager(this);
             Graphics.DeviceManager = graphics;
 
             Graphics.ScreenRect = new Rect(0, 0, 640, 480);
-            graphics.PreferredBackBufferWidth = 640;
-            graphics.PreferredBackBufferHeight = 480;
+            graphics.PreferredBackBufferWidth = 1600;
+            graphics.PreferredBackBufferHeight = 900;
+            //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
@@ -46,11 +53,6 @@ namespace RTS
             IsMouseVisible = true;
 
             viewport = new Game_Player.Viewport(0, 0, Graphics.ScreenWidth, Graphics.ScreenHeight);
-            sprite = new Sprite(viewport, new Bitmap("elmo"));
-            sprite.ZoomX = sprite.ZoomY = 0.5;
-            sprite.OX = sprite.Bitmap.Width / 2;
-            sprite.OY = sprite.Bitmap.Height / 2;
-
         }
 
         /// <summary>
@@ -114,50 +116,7 @@ namespace RTS
                 lastToggle = 0;
             }
 
-            // Elmo
-            sprite.X += spriteXSpeed * (3/2);
-            sprite.Y += spriteYSpeed;
-            sprite.Z = viewport.Sprites.Count;
-            sprite.Rotation += rotationSpeed * rotationDirection;
-            if (sprite.X > Graphics.ScreenWidth) spriteXSpeed *= -1;
-            if (spriteXSpeed < 0 && sprite.X < 1) spriteXSpeed *= -1;
-            if (sprite.Y > Graphics.ScreenHeight) spriteYSpeed *= -1;
-            if (spriteYSpeed < 0 && sprite.Y < 1) spriteYSpeed *= -1;
-
-            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt)) rotationSpeed += .0001;
-            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl)) rotationSpeed -= .0001;
-            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up)) { spriteYSpeed -= 1; }
-            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Down)) { spriteYSpeed += 1; }
-            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left)) { spriteXSpeed -= 1; }
-            if (Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right)) { spriteXSpeed += 1; }
-
-
-            // Click detection
-            lastMouseState = currentMouseState;
-            currentMouseState = Mouse.GetState();
-
-            if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
-            {
-                //rotationDirection *= -1;
-                // arrow keys to rotate, delete all sprites except elmo on click
-                // viewport.Sprites.ForEach(sprite => sprite.ZoomX += 1);
-                // viewport.Sprites.ForEach(WeirdBall => WeirdBall.Dispose());
-                // viewport.Sprites.RemoveAll(is WeirdBall);
-                // viewport.Sprites.RemoveAt(0);
-                // if (viewport.Sprites.Count > 1) viewport.Sprites.RemoveRange(1, viewport.Sprites.Count - 1);
-                // viewport.Sprites.Where(s => s is WeirdSprite).ForEach(s => s.Dispose())
-                foreach (Sprite sprite in viewport.Sprites) { if (sprite is WeirdBall) { sprite.Dispose(); } }               
-            }
-
-
-            // Snake
-            if (currentMouseState.LeftButton == ButtonState.Pressed)
-            {
-                WeirdBall ball = new WeirdBall(viewport);
-                ball.X = Mouse.GetState().X;
-                ball.Y = Mouse.GetState().Y;
-                ball.Z = viewport.Sprites.Count;
-            }
+            
 
             viewport.Sprites.ForEach(sprite => sprite.Update());
 

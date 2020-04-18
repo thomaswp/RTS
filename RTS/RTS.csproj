@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,7 +13,8 @@
     <AssemblyName>RTS</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -61,6 +62,7 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="app.manifest" />
     <None Include="Content\bin\Windows\Content\Effects.xnb" />
     <None Include="Content\bin\Windows\Content\elmo.xnb" />
@@ -73,9 +75,17 @@
     <None Include="Content\obj\Windows\Content\Trans.mgcontent" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataObjectEditor\ObjectEditor\DataObjectEditor.csproj">
+      <Project>{27612836-da8d-489e-a725-c6876d22a7a1}</Project>
+      <Name>DataObjectEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GamePlayerLibrary\GamePlayerLibrary.csproj">
       <Project>{09f6eb1f-5db8-48b9-862e-ac0b57a1b1d5}</Project>
       <Name>GamePlayerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HearthData\HearthData.csproj">
+      <Project>{bacf4459-bc23-47cd-8991-8dba0d5c18fb}</Project>
+      <Name>HearthData</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
