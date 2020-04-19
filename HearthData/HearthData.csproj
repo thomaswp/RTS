@@ -44,9 +44,11 @@
     <Compile Include="Building.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameData.cs" />
+    <Compile Include="Graphics\MultiTileBitmap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="ResourceSource.cs" />
+    <Compile Include="MapTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataObjectEditor\ObjectEditor\DataObjectEditor.csproj">

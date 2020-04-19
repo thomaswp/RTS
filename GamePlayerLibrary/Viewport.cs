@@ -174,8 +174,9 @@ namespace Game_Player
         /// <summary>
         /// Updates the Viewport and handles any effects it's implementing.
         /// </summary>
-        public void Update()
+        public virtual void Update()
         {
+            _sprites.ForEach(s => s.Update());
         }
 
         public int CompareTo(object obj)

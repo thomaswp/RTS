@@ -7,6 +7,16 @@
 "resourceSources":[
 ],
 "buildings":[
+{
+"__class":"Building",
+"__id":1,
+"name":"Hearth",
+"icon":"RTS_AXE.png",
+"sprite":"RTSHouse.png",
+"cellWidth":3,
+"cellHeight":3,
+"Guid":"a2159071-2b3b-4353-b52e-816302ed1bf0"
+}
 ],
 "Guid":"78c56ade-93f1-45b0-af9e-c9fda9468dc5"
 }

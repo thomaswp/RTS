@@ -22,7 +22,8 @@ namespace HearthEditor
 
         private static void Load()
         {
-            MainForm.ResourcesPath = @"C:\Users\Thomas\Documents\GitHub\web\ctedgame\res\";
+            MainForm.ResourcesPath = @"C:\Users\Thomas\Documents\GitHub\RTS\Assets\";
+            MainForm.ResourceGraphicsPrefix = @"Graphics\";
             //FieldEditor.RegisterEditor();
             GameData.LoadAll();
             //DataObjectEditor.SafeNamer = new HearthSafeNamer();

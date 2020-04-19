@@ -21,15 +21,8 @@ namespace RTS
         int miliseconds = 0;
         int lastToggle = 0;
         const int TOGGLE_TIME = 3000;
-        MouseState currentMouseState;
-        MouseState lastMouseState;
-        int spriteXSpeed = 3;
-        int spriteYSpeed = 3;
-        int rotationDirection = 1;
-        double rotationSpeed = .01;
 
-        Game_Player.Viewport viewport;
-        Sprite sprite;
+        StructureLayer structureLayer;
 
         public Game1()
         {
@@ -41,18 +34,19 @@ namespace RTS
             graphics = new GraphicsDeviceManager(this);
             Graphics.DeviceManager = graphics;
 
-            Graphics.ScreenRect = new Rect(0, 0, 640, 480);
             graphics.PreferredBackBufferWidth = 1600;
             graphics.PreferredBackBufferHeight = 900;
             //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
+            Graphics.ScreenRect = new Rect(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             Content.RootDirectory = "Content";
-            Paths.Root = "Content/";
+            Paths.Root = @"C:\Users\Thomas\Documents\GitHub\RTS\Assets\";
 
             IsMouseVisible = true;
+           
 
-            viewport = new Game_Player.Viewport(0, 0, Graphics.ScreenWidth, Graphics.ScreenHeight);
+            structureLayer = new StructureLayer(game);
         }
 
         /// <summary>
@@ -116,9 +110,9 @@ namespace RTS
                 lastToggle = 0;
             }
 
-            
 
-            viewport.Sprites.ForEach(sprite => sprite.Update());
+
+            structureLayer.Update();
 
             base.Update(gameTime);
         }
