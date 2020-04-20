@@ -58,7 +58,7 @@ namespace Game_Player
             set
             {
                 visible = value;
-                foreach (Sprite sprite in sprites)
+                foreach (OldSprite sprite in sprites)
                     if (sprite != null)
                         sprite.Visible = visible;
             }
@@ -70,7 +70,7 @@ namespace Game_Player
             get { return oX; }
             set 
             {
-                foreach (Sprite sprite in sprites)
+                foreach (OldSprite sprite in sprites)
                     if (sprite != null)
                         sprite.X -= value - oX;
                 oX = value;
@@ -83,14 +83,14 @@ namespace Game_Player
             get { return oY; }
             set 
             {
-                foreach (Sprite sprite in sprites)
+                foreach (OldSprite sprite in sprites)
                     if (sprite != null)
                         sprite.Y -= value - oY;
                 oY = value;
             }
         }
 
-        private Sprite[, ,] sprites;
+        private OldSprite[, ,] sprites;
         private const int FRAME_LENGTH = 30;
         private int frame = 0;
 
@@ -286,7 +286,7 @@ namespace Game_Player
 
         public  void MakeMap()
         {
-            sprites = new Sprite[mapData.GetLength(0), mapData.GetLength(1), mapData.GetLength(2)];
+            sprites = new OldSprite[mapData.GetLength(0), mapData.GetLength(1), mapData.GetLength(2)];
 
             for (int d = 0; d < mapData.GetLength(2); d++)
             {
@@ -302,7 +302,7 @@ namespace Game_Player
                             int tileY = (tileId - 384) / 8 * 32;
                             Rect rect = new Rect(tileX, tileY, 32, 32);
 
-                            Sprite sprite = new Sprite(viewport, tileset);
+                            OldSprite sprite = new OldSprite(viewport, tileset);
                             sprite.BmpSourceRect = rect;
                             sprite.Rect = new Rect(x * 32, y * 32, 32, 32);
                             sprite.Z = d + priorities[tileId] * 32 + y * 32;
@@ -312,7 +312,7 @@ namespace Game_Player
                         {
                             Bitmap bmp = AutoTile(tileId % 48, autoTiles[tileId / 48 - 1]);
 
-                            Sprite sprite = new Sprite(viewport, bmp);
+                            OldSprite sprite = new OldSprite(viewport, bmp);
                             sprite.BmpSourceRect = new Rect(0, 0, 32, 32);
                             sprite.Rect = new Rect(x * 32, y * 32, 32, 32);
                             sprite.Z = d + priorities[tileId] * 32 + y * 32;
@@ -345,7 +345,7 @@ namespace Game_Player
                 {
                     for (int x = 0; x < mapData.GetLength(0); x++)
                     {
-                        Sprite sprite = sprites[x, y, d];
+                        OldSprite sprite = sprites[x, y, d];
                         if (sprite != null)
                         {
                             if (mapData[x, y, d] < 384 && sprite.Bitmap.Width > 32)

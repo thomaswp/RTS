@@ -111,6 +111,8 @@ namespace Game_Player
             get { return Math.Abs(fading) > 0; }
         }
 
+        public static Transformable Root = new Transformable();
+
         static int ids = -1;
 
         static double faded = 0;
@@ -199,6 +201,7 @@ namespace Game_Player
                 if (Viewports[i].Disposed == false)
                 { Viewports[i].Update(); }
             }
+            Root.Update();
         }
 
 
@@ -306,6 +309,38 @@ namespace Game_Player
 
         public static Texture2D Draw() { return Draw(false); }
 
+
+        private static void Draw(Transformable trans, Matrix parentMatrix, Color color)
+        {
+            Matrix matrix = trans.GetLocalTransform();
+            matrix *= parentMatrix;
+
+            // TODO: Blend colors;
+            color = trans.Color;
+
+            Renderable renderable = trans as Renderable;
+            if (renderable != null)
+            {
+                if (!renderable.Visible) return;
+                Console.WriteLine(renderable.GetType());
+                Console.WriteLine(matrix);
+                if (renderable.Bitmap.NeedRefresh)
+                {
+                    renderable.Bitmap.Texture = CreateTextureFromBitmap(renderable.Bitmap.SystemBitmap);
+                    renderable.Bitmap.NeedRefresh = false;
+                }
+                SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, null, null, null, null, matrix);
+                //SpriteBatch.Begin(SpriteSortMode.Immediate);
+                SpriteBatch.Draw(renderable.Bitmap.Texture, Vector2.Zero, renderable.BmpSourceRect.ToXNARect(), color.ToXNAColor());
+                SpriteBatch.End();
+            }
+            
+            foreach (Transformable child in trans.Children)
+            {
+                Draw(child, matrix, color);
+            }
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -335,6 +370,9 @@ namespace Game_Player
 
             GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
             
+            Draw(Root, Matrix.Identity, Colors.White);
+            
+            
             Microsoft.Xna.Framework.Color color; 
             Texture2D texture; 
             int totalAlpha; 
@@ -355,9 +393,9 @@ namespace Game_Player
                 viewport.Sprites.Sort();
                 GraphicsDevice.Viewport = GetViewport(viewport);
 
-                List<Sprite> remove = new List<Sprite>();
+                List<OldSprite> remove = new List<OldSprite>();
 
-                foreach (Sprite sprite in viewport.Sprites)
+                foreach (OldSprite sprite in viewport.Sprites)
                 {
                     t++;
 
@@ -486,7 +524,7 @@ namespace Game_Player
                     }
                 }
 
-                foreach (Sprite sprite in remove)
+                foreach (OldSprite sprite in remove)
                     viewport.Sprites.Remove(sprite);
             }
             SpriteBatch.End();

@@ -6,50 +6,55 @@ using System.Threading.Tasks;
 using Game_Player;
 using HearthData;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace RTS
 {
-    public class StructureLayer : Viewport
+    public class StructureLayer : Transformable
     {
         public readonly int TileSize = 40;
 
-        readonly Game game;
+        readonly HearthData.Game game;
 
         List<BuildingSprite> buildings = new List<BuildingSprite>();
 
         BuildingSprite addingBuilding;
 
-        public StructureLayer(Game game) : base(0, 0, Graphics.ScreenWidth, Graphics.ScreenHeight)
+        public bool IsPlacing { get { return addingBuilding != null; } }
+
+        public StructureLayer(HearthData.Game game)
         {
             this.game = game;
 
             game.buildings.ForEach(b => AddBuilding(b, 1, 0));
-
-            StartAddingBuilding(game.buildings[0]);
         }
 
         public void AddBuilding(Building building, int cellX, int cellY)
         {
             BuildingSprite sprite = new BuildingSprite(building, cellX, cellY, this);
             buildings.Add(sprite);
-            AddSprite(sprite);
+            AddChild(sprite);
             sprite.X = cellX * TileSize;
             sprite.Y = cellY * TileSize;
+            
         }
         
         public void StartAddingBuilding(Building building)
         {
             addingBuilding = new BuildingSprite(building, 0, 0, this);
+            addingBuilding.Z = int.MaxValue;
+            AddChild(addingBuilding);
             UpdateAddBuilding();
         }
 
         private void UpdateAddBuilding()
         {
-            if (addingBuilding == null) return;
-
+            if (!IsPlacing) return;
             MouseState mouse = Mouse.GetState();
-            int tileX = mouse.X / TileSize;
-            int tileY = mouse.Y / TileSize;
+            Vector2 mousePos = new Vector2(mouse.X, mouse.Y);
+            Vector2 relativePos = Vector2.Transform(mousePos, Matrix.Invert(GetFullTransform()));
+            int tileX = (int)relativePos.X / TileSize;
+            int tileY = (int)relativePos.Y / TileSize;
             tileX -= addingBuilding.CellWidth / 2;
             tileY -= addingBuilding.CellHeight / 2;
 
@@ -57,10 +62,36 @@ namespace RTS
             addingBuilding.Y = tileY * TileSize;
         }
 
+        private void CheckToPlaceBuilding()
+        {
+            if (!IsPlacing) return;
+            if (Input.LeftMouseState == InputState.Triggered)
+            {
+                addingBuilding.Z = 0;
+                buildings.Add(addingBuilding);
+                AddChild(addingBuilding);
+                addingBuilding = null;
+            }
+        }
+
+        private void CheckToStartAddingBuilding()
+        {
+            if (IsPlacing) return;
+            if (Input.RightMouseState == InputState.Triggered)
+            {
+                StartAddingBuilding(game.buildings[0]);
+            }
+        }
+
         public override void Update()
         {
             base.Update();
+
+            CheckToStartAddingBuilding();
             UpdateAddBuilding();
+            CheckToPlaceBuilding();
+
+            
         }
 
 
@@ -78,13 +109,13 @@ namespace RTS
                 this.cellX = cellX;
                 this.cellY = cellY;
 
-                bitmap = Assets.LoadBuilding(building.sprite);
+                Bitmap = Assets.LoadBuilding(building.sprite);
                 //OX = bitmap.Width / 2;
                 //OY = bitmap.Height / 2;
 
                 // Should probably use padding to ensure zoom is proportional
-                ZoomX = ((float) CellWidth) * layer.TileSize / bitmap.Width;
-                ZoomY = ((float) CellHeight) * layer.TileSize / bitmap.Height;
+                ScaleX = ((float) CellWidth) * layer.TileSize / Bitmap.Width;
+                ScaleY = ((float) CellHeight) * layer.TileSize / Bitmap.Height;
             }
 
             public override void Update()

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Game_Player
 {
-    public class Plane : Sprite
+    public class Plane : OldSprite
     {
         public Plane(Viewport viewport) : base(viewport) 
         {

@@ -7,7 +7,7 @@ using Game_Player;
 
 namespace RTS
 {
-    class WeirdBall : Sprite
+    class WeirdBall : OldSprite
     {
         int lifeTick;
         const int LIFE = 5000;

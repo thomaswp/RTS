@@ -8,7 +8,7 @@ namespace Game_Player
     /// <summary>
     /// Possible Keystates to which to compare an Input.GetState() call.
     /// </summary>
-    public enum KeyStates 
+    public enum InputState 
     { 
         /// <summary>
         /// Indicated that the key has been up for more than one frame.
@@ -135,8 +135,8 @@ namespace Game_Player
         private static int primaryDir = 0;
 
         static Microsoft.Xna.Framework.Input.Keys[][] keys = new Microsoft.Xna.Framework.Input.Keys[NUM_OF_KEYS][];
-        static KeyStates[] states = new KeyStates[NUM_OF_KEYS];
-        static KeyStates[] oldStates = new KeyStates[NUM_OF_KEYS];
+        static InputState[] states = new InputState[NUM_OF_KEYS];
+        static InputState[] oldStates = new InputState[NUM_OF_KEYS];
 
         static Input()
         {
@@ -165,12 +165,31 @@ namespace Game_Player
             GetKeys(keys);
         }
 
+        public static int MouseX { get { return Mouse.GetState().X; } }
+        public static int MouseY { get { return Mouse.GetState().Y; } }
+
+        public static int MouseScroll { get; private set; }
+        private static int lastMouseScroll = 0;
+
+        public static InputState LeftMouseState { get; private set; }
+        public static InputState MiddleMouseState { get; private set; }
+        public static InputState RightMouseState { get; private set; }
+
         /// <summary>
         /// Updates the Input Class. Generally this is done through <c>Globals.GameSystem.Update()</c>,
         /// and does not need to be explicitly called.
         /// </summary>
         public static void Update()
         {
+            MouseState mouseState = Mouse.GetState();
+            LeftMouseState = UpdateMouseState(mouseState.LeftButton, LeftMouseState);
+            //Console.WriteLine(LeftMouseState);
+            RightMouseState = UpdateMouseState(mouseState.RightButton, RightMouseState);
+            MiddleMouseState = UpdateMouseState(mouseState.MiddleButton, MiddleMouseState);
+
+            MouseScroll = mouseState.ScrollWheelValue - lastMouseScroll;
+            lastMouseScroll = mouseState.ScrollWheelValue;
+
             Boolean pressed;
             for (int i = 0; i < NUM_OF_KEYS; i++)
             {
@@ -182,23 +201,23 @@ namespace Game_Player
                 }
                 if (pressed)
                 {
-                    if (states[i] == KeyStates.Lifted || states[i] == KeyStates.Released)
-                        states[i] = KeyStates.Triggered;
+                    if (states[i] == InputState.Lifted || states[i] == InputState.Released)
+                        states[i] = InputState.Triggered;
                     else
-                        states[i] = KeyStates.Held;
+                        states[i] = InputState.Held;
                 }
                 else
                 {
-                    if (states[i] == KeyStates.Triggered || states[i] == KeyStates.Held)
-                        states[i] = KeyStates.Released;
+                    if (states[i] == InputState.Triggered || states[i] == InputState.Held)
+                        states[i] = InputState.Released;
                     else
-                        states[i] = KeyStates.Lifted;
+                        states[i] = InputState.Lifted;
                 }
             }
             
             for (int i = 0; i < oldStates.Length; i++)
             {
-                if (oldStates[i] == states[i] && states[i] == KeyStates.Held)
+                if (oldStates[i] == states[i] && states[i] == InputState.Held)
                     held[i]++;
                 else
                     held[i] = 0;
@@ -232,7 +251,21 @@ namespace Game_Player
             oldStates = states;
         }
 
-        public static KeyStates State(int key)
+        private static InputState UpdateMouseState(ButtonState buttonState, InputState oldState)
+        {
+            if (buttonState == ButtonState.Pressed)
+            {
+                if (oldState == InputState.Released || oldState == InputState.Lifted) return InputState.Triggered;
+                return InputState.Held;
+            }
+            else
+            {
+                if (oldState == InputState.Held || oldState == InputState.Triggered) return InputState.Released;
+                return InputState.Lifted;
+            }
+        }
+
+        public static InputState State(int key)
         {
             return states[key - 1];
         }
@@ -242,7 +275,7 @@ namespace Game_Player
         /// <param name="key">The key being checked.</param>
         /// <returns>The <see cref="F:Game_Player.KeyStates">KeyStates</see>
         /// of the given key.</returns>
-        public static KeyStates State(Keys key)
+        public static InputState State(Keys key)
         {       
             return states[(int)key - 1];
         }
@@ -277,7 +310,7 @@ namespace Game_Player
 
         public static bool Held(int key)
         {
-            return State(key) == KeyStates.Held;
+            return State(key) == InputState.Held;
         }
         /// <summary>
         /// Indicates if the given key is in the Held state. This includes all time after the key is
@@ -288,12 +321,12 @@ namespace Game_Player
         /// <returns>The indicating boolean.</returns>
         public static Boolean Held(Keys key)
         { 
-            return State(key) == KeyStates.Held; 
+            return State(key) == InputState.Held; 
         }
 
         public static Boolean Triggered(int key)
         {
-            return State(key) == KeyStates.Triggered;
+            return State(key) == InputState.Triggered;
         }
         /// <summary>
         /// Indicates if the given key is in the Triggered state. This includes only the
@@ -304,7 +337,7 @@ namespace Game_Player
         /// <returns>The indicating boolean.</returns>
         public static Boolean Triggered(Keys key)
         { 
-            return State(key) == KeyStates.Triggered; 
+            return State(key) == InputState.Triggered; 
         }
 
         public static Boolean Repeated(int key)

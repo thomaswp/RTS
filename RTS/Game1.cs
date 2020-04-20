@@ -22,8 +22,6 @@ namespace RTS
         int lastToggle = 0;
         const int TOGGLE_TIME = 3000;
 
-        StructureLayer structureLayer;
-
         public Game1()
         {
             HearthData.Game.LoadAll();
@@ -44,9 +42,9 @@ namespace RTS
             Paths.Root = @"C:\Users\Thomas\Documents\GitHub\RTS\Assets\";
 
             IsMouseVisible = true;
-           
 
-            structureLayer = new StructureLayer(game);
+            Map map = new Map(game);
+            Graphics.Root.AddChild(map);
         }
 
         /// <summary>
@@ -112,7 +110,8 @@ namespace RTS
 
 
 
-            structureLayer.Update();
+            Graphics.Update();
+            Input.Update();
 
             base.Update(gameTime);
         }

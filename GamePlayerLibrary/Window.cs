@@ -340,10 +340,10 @@ namespace Game_Player
         const int ARROW_SLOW = 10;
         #endregion
 
-        Sprite contentsSprite;
-        Sprite arrowSprite;
-        Sprite[] windowSprites = new Sprite[9];
-        Sprite[] cursorSprites = new Sprite[9];
+        OldSprite contentsSprite;
+        OldSprite arrowSprite;
+        OldSprite[] windowSprites = new OldSprite[9];
+        OldSprite[] cursorSprites = new OldSprite[9];
 
         double arrowState = 0;
         int cursorState = 0;
@@ -398,7 +398,7 @@ namespace Game_Player
             this.viewport = viewport;
         }
 
-        void Reassign_S(Sprite s, Viewport v)
+        void Reassign_S(OldSprite s, Viewport v)
         {
             if (s != null)
             {
@@ -414,7 +414,7 @@ namespace Game_Player
                 if (arrowSprite != null) { if (!arrowSprite.Disposed) { arrowSprite.Dispose(); } }
                 Bitmap bmp = new Bitmap(ARROW_RECT.Width, ARROW_RECT.Height);
                 bmp.BlockTransfer(0, 0, WindowSkin, ARROW_RECT);
-                arrowSprite = new Sprite(Viewport, bmp);
+                arrowSprite = new OldSprite(Viewport, bmp);
                 arrowState = 0;
             }
             catch
@@ -430,7 +430,7 @@ namespace Game_Player
                 if (!contentsSprite.Disposed) 
                     return;
 
-            contentsSprite = new Sprite(Viewport, new Bitmap(rWidth, rHeight));
+            contentsSprite = new OldSprite(Viewport, new Bitmap(rWidth, rHeight));
         }
 
         private void LoadCursor()
@@ -443,7 +443,7 @@ namespace Game_Player
             LoadFrameSprites(ref windowSprites, BORDER_RECT, CENTER_RECT, WS_BORDER_WIDTH);
         }
 
-        private void LoadFrameSprites(ref Sprite[] sprites, Rect borderRect, Rect centerRect, int w)
+        private void LoadFrameSprites(ref OldSprite[] sprites, Rect borderRect, Rect centerRect, int w)
         {
             try
             {
@@ -545,7 +545,7 @@ namespace Game_Player
                     if (i != (int)Sides.Center) { rect = new Rect(x1 + borderRect.X, y1 + borderRect.Y, x2 - x1, y2 - y1); }
                     bmp = new Bitmap(rect.Width, rect.Height);
                     bmp.BlockTransfer(0, 0, WindowSkin, rect);
-                    sprites[i] = new Sprite(Viewport, bmp);
+                    sprites[i] = new OldSprite(Viewport, bmp);
                 }
             }
             catch
@@ -555,7 +555,7 @@ namespace Game_Player
             }
         }
 
-        private void UpdateFrameSprites(ref Sprite[] sprites, Rect rect, int border, int indent)
+        private void UpdateFrameSprites(ref OldSprite[] sprites, Rect rect, int border, int indent)
         {
             int cornerWidth = border; int cornerHeight = border;
             int x = rect.X; int y = rect.Y;

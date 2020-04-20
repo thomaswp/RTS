@@ -101,11 +101,11 @@ namespace Game_Player
             set { _visible = value; }
         }
 
-        List<Sprite> _sprites  = new List<Sprite>();
+        List<OldSprite> _sprites  = new List<OldSprite>();
         /// <summary>
         /// An array containing the Sprites contained in this Viewport.
         /// </summary>
-        public List<Sprite> Sprites
+        public List<OldSprite> Sprites
         { get { return _sprites; } }
 
         Boolean _disposed = false;
@@ -120,7 +120,7 @@ namespace Game_Player
         static Viewport _default = new Viewport(Graphics.ScreenRect);
         /// <summary>
         /// The default Viewport used when declaring 
-        /// <see cref="Game_Player.Sprite">Sprites</see> and 
+        /// <see cref="Game_Player.OldSprite">Sprites</see> and 
         /// <see cref="Game_Player.Window">Windows</see> without an argument.
         /// </summary>
         public static Viewport Default
@@ -149,7 +149,7 @@ namespace Game_Player
         /// </summary>
         /// <param name="sprite">The Sprite to be added.</param>
         /// <returns>The ID to be assigned to the added sprite.</returns>
-        public int AddSprite(Sprite sprite)
+        public int AddSprite(OldSprite sprite)
         {
             _sprites.Add(sprite);
             _ids++;
