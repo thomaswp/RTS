@@ -46,12 +46,12 @@ namespace RTS
 
             if (Input.Held(Keys.X))
             {
-                CenterX += 3f / ScaleX;
+                CenterX -= 3f / ScaleX;
             }
             if (Input.Held(Keys.Z))
             {
                 Console.WriteLine("!");
-                CenterX -= 3f / ScaleX;
+                CenterX += 3f / ScaleX;
             }
         }
     }

@@ -318,12 +318,17 @@ namespace Game_Player
             // TODO: Blend colors;
             color = trans.Color;
 
+            foreach (Transformable child in trans.Children)
+            {
+                if (child.Z < 0) Draw(child, matrix, color);
+            }
+
             Renderable renderable = trans as Renderable;
             if (renderable != null)
             {
                 if (!renderable.Visible) return;
-                Console.WriteLine(renderable.GetType());
-                Console.WriteLine(matrix);
+                //Console.WriteLine(renderable.GetType());
+                //Console.WriteLine(matrix);
                 if (renderable.Bitmap.NeedRefresh)
                 {
                     renderable.Bitmap.Texture = CreateTextureFromBitmap(renderable.Bitmap.SystemBitmap);
@@ -337,7 +342,7 @@ namespace Game_Player
             
             foreach (Transformable child in trans.Children)
             {
-                Draw(child, matrix, color);
+                if (child.Z >= 0) Draw(child, matrix, color);
             }
         }
 
