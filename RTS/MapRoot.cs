@@ -8,21 +8,27 @@ using System.Threading.Tasks;
 
 namespace RTS
 {
-    public class Map : Transformable
+    public class MapRoot : Transformable
     {
-        public StructureLayer structureLayer;
+        readonly StructureLayer structureLayer;
+        readonly GroundLayer groundLayer;
 
-        public readonly Game game;
+        public readonly HearthGame game;
 
+        public const int TILE_SIZE = 40;
         const float MIN_SCALE = 0.2f, MAX_SCALE = 5;
 
         private float targetScale = 1;
 
-        public Map(Game game)
+        public MapRoot(HearthGame game)
         {
             this.game = game;
             structureLayer = new StructureLayer(game);
             AddChild(structureLayer);
+
+            groundLayer = new GroundLayer(game, game.startingMap.Get());
+            AddChild(groundLayer);
+            groundLayer.Z = -1;
 
             Sprite s = new Sprite(new Bitmap(20, 20));
             s.Bitmap.FillRect(0, 0, 19, 19, Colors.White);

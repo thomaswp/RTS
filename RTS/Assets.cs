@@ -16,5 +16,10 @@ namespace RTS
         {
             return new Bitmap(GraphicsPath + @"Buildings\" + path);
         }
+
+        public static Bitmap LoadTile(string path)
+        {
+            return new Bitmap(GraphicsPath + @"Tiles\" + path);
+        }
     }
 }

@@ -12,9 +12,9 @@ namespace RTS
 {
     public class StructureLayer : Transformable
     {
-        public readonly int TileSize = 40;
+        public readonly int TileSize = MapRoot.TILE_SIZE;
 
-        readonly HearthData.Game game;
+        readonly HearthData.HearthGame game;
 
         List<BuildingSprite> buildings = new List<BuildingSprite>();
 
@@ -22,7 +22,7 @@ namespace RTS
 
         public bool IsPlacing { get { return addingBuilding != null; } }
 
-        public StructureLayer(HearthData.Game game)
+        public StructureLayer(HearthData.HearthGame game)
         {
             this.game = game;
 

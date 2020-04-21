@@ -7,6 +7,8 @@ namespace HearthData
 {
     public abstract class GameData : GuidDataObject
     {
+        public string name;
+
         public Guid Guid
         {
             get; set;
@@ -43,6 +45,11 @@ namespace HearthData
                 new NoArgsTypeConstructor(type).Register(type);
                 //Console.WriteLine(type.Name);
             }
+        }
+
+        public override string ToString()
+        {
+            return name == null || name.Length == 0 ? GetType().Name : name;
         }
     }
 

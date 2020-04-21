@@ -4,7 +4,6 @@ namespace HearthData
 {
     public class ResourceSource : GameData
     {
-        public string name;
         [FieldTag(FieldTags.Image, "objects")]
         public string sprite;
         public float rate = 1;

@@ -24,9 +24,9 @@ namespace RTS
 
         public Game1()
         {
-            HearthData.Game.LoadAll();
+            HearthData.HearthGame.LoadAll();
             string json = File.ReadAllText("C:/Users/Thomas/Documents/GitHub/RTS/game.json");
-            HearthData.Game game = ObjectEditor.Json.JsonSerializer.fromJson<HearthData.Game>(json);
+            HearthData.HearthGame game = ObjectEditor.Json.JsonSerializer.fromJson<HearthData.HearthGame>(json);
             Console.WriteLine(game.name);
 
             graphics = new GraphicsDeviceManager(this);
@@ -43,7 +43,7 @@ namespace RTS
 
             IsMouseVisible = true;
 
-            Map map = new Map(game);
+            MapRoot map = new MapRoot(game);
             Graphics.Root.AddChild(map);
         }
 

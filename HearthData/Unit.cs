@@ -7,9 +7,14 @@ using System.Threading.Tasks;
 
 namespace HearthData
 {
-    public class MapTile : GameData
+    public class Unit : GameData
     {
-        [FieldTag(FieldTags.Image, "Tiles")]
+        [FieldTag(FieldTags.Image, "Units")]
         public string sprite;
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }

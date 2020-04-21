@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace HearthData
 {
-    public class MapTile : GameData
+    public class Map : GameData
     {
-        [FieldTag(FieldTags.Image, "Tiles")]
-        public string sprite;
+        public readonly Reference<MapTile> defaultTile = new Reference<MapTile>();
+        public int tileWidth, tileHeight;
     }
 }
