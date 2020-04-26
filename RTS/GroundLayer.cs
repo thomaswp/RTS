@@ -15,7 +15,9 @@ namespace RTS
         private readonly HearthGame game;
         private readonly Map map;
 
-        private Sprite[,] tiles;
+        //private Sprite[,] tiles;
+        private Bitmap[,] tiles;
+        private Sprite sprite;
 
         public int CellWidth { get { return map.tileWidth; } }
         public int CellHeight { get { return map.tileHeight; } }
@@ -26,18 +28,26 @@ namespace RTS
             this.map = map;
 
             Bitmap defaultTile = Assets.LoadTile(map.defaultTile.Get().sprite);
-            tiles = new Sprite[CellWidth, CellHeight];
+            // TODO: Why is this needed?
+            defaultTile.Resize(TileSize + 1, TileSize + 1);
+
+            sprite = new Sprite(new Bitmap(CellWidth * TileSize, CellHeight * TileSize));
+            AddChild(sprite);
+
+            System.Drawing.Graphics graphics = sprite.Bitmap.Graphics;
+            tiles = new Bitmap[CellWidth, CellHeight];
             for (int i = 0; i < CellWidth; i++)
             {
                 for (int j = 0; j < CellHeight; j++)
                 {
-                    Sprite tile = new Sprite(defaultTile);
-                    tile.X = i * TileSize;
-                    tile.Y = j * TileSize;
-                    tile.ScaleX = (float) TileSize / tile.Bitmap.Width;
-                    tile.ScaleY = (float) TileSize / tile.Bitmap.Height;
-                    AddChild(tile);
-                    tiles[i, j] = tile;
+                    //Sprite tile = new Sprite(defaultTile);
+                    int tileX = i * TileSize;
+                    int tileY = j * TileSize;
+                    
+                    //tile.ScaleX = (float) TileSize / tile.Bitmap.Width;
+                    //tile.ScaleY = (float) TileSize / tile.Bitmap.Height;
+                    tiles[i, j] = defaultTile;
+                    graphics.DrawImage(defaultTile.SystemBitmap, tileX, tileY);
                 }
             }
         }

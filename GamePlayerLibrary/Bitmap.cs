@@ -503,6 +503,11 @@ namespace Game_Player
             Graphics.DrawPolygon(color.ToPen(), sdPoints);
         }
 
+        //public void DrawBitmap(Bitmap bitmap, int x, int y, int width, int height)
+        //{
+            
+        //}
+
         /// <summary>
         /// Draws a given string at the coordinates or <see cref="Game_Player.Rect">Rect</see> given. 
         /// By default the string will be at the size designated by the FontSize property, but it 

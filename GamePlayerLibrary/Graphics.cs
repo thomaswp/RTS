@@ -314,6 +314,7 @@ namespace Game_Player
         {
             Matrix matrix = trans.GetLocalTransform();
             matrix *= parentMatrix;
+            //Matrix matrix = Matrix.Identity;
 
             // TODO: Blend colors;
             color = trans.Color;
@@ -336,19 +337,19 @@ namespace Game_Player
                     renderable.Bitmap.Texture = CreateTextureFromBitmap(renderable.Bitmap.SystemBitmap);
                     renderable.Bitmap.NeedRefresh = false;
                 }
-                bool draw = true;// bounds.Contains(Vector2.Transform(Vector2.Zero, matrix));
-                //for (int i = 0; i < 1 && !draw; i++)
-                //{
-                //    for (int j = 0; j < 1 && !draw; j++)
-                //    {
-                //        Vector2 point = new Vector2(renderable.Bitmap.Width * i, renderable.Bitmap.Height * j);
-                //        point = Vector2.Transform(point, matrix);
-                //        if (bounds.Contains(point))
-                //        {
-                //            draw = true;
-                //        }
-                //    }
-                //}
+                bool draw = false;
+                for (int i = 0; i < 1 && !draw; i++)
+                {
+                    for (int j = 0; j < 1 && !draw; j++)
+                    {
+                        Vector2 point = new Vector2(renderable.Bitmap.Width * i, renderable.Bitmap.Height * j);
+                        point = Vector2.Transform(point, matrix);
+                        if (bounds.Contains(point))
+                        {
+                            draw = true;
+                        }
+                    }
+                }
                 if (draw)
                 {
                     SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, null, null, null, null, matrix);
@@ -393,8 +394,8 @@ namespace Game_Player
             GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
             
             Draw(Root, Matrix.Identity, Colors.White);
-            
-            
+
+
             Microsoft.Xna.Framework.Color color; 
             Texture2D texture; 
             int totalAlpha; 
