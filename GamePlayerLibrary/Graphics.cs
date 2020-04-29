@@ -337,22 +337,22 @@ namespace Game_Player
                     renderable.Bitmap.Texture = CreateTextureFromBitmap(renderable.Bitmap.SystemBitmap);
                     renderable.Bitmap.NeedRefresh = false;
                 }
-                bool draw = false;
-                for (int i = 0; i < 1 && !draw; i++)
-                {
-                    for (int j = 0; j < 1 && !draw; j++)
-                    {
-                        Vector2 point = new Vector2(renderable.Bitmap.Width * i, renderable.Bitmap.Height * j);
-                        point = Vector2.Transform(point, matrix);
-                        if (bounds.Contains(point))
-                        {
-                            draw = true;
-                        }
-                    }
-                }
+                bool draw = true;
+                //for (int i = 0; i < 1 && !draw; i++)
+                //{
+                //    for (int j = 0; j < 1 && !draw; j++)
+                //    {
+                //        Vector2 point = new Vector2(renderable.Bitmap.Width * i, renderable.Bitmap.Height * j);
+                //        point = Vector2.Transform(point, matrix);
+                //        if (bounds.Contains(point))
+                //        {
+                //            draw = true;
+                //        }
+                //    }
+                //}
                 if (draw)
                 {
-                    SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, null, null, null, null, matrix);
+                    SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, null, matrix);
                     SpriteBatch.Draw(renderable.Bitmap.Texture, Vector2.Zero, renderable.BmpSourceRect.ToXNARect(), color.ToXNAColor());
                     SpriteBatch.End();
                 }

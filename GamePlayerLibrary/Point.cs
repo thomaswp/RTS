@@ -86,5 +86,10 @@ namespace Game_Player
         {
             return new Point(a.X - b.X, a.Y - b.Y);
         }
+
+        public override string ToString()
+        {
+            return String.Format("{{{0}, {1}}}", _x, _y);
+        }
     }
 }

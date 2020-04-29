@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace Game_Player
 {
@@ -32,138 +33,19 @@ namespace Game_Player
     }
 
     /// <summary>
-    /// Possible keys that are checked for input. These keys correspond to real keyboard keys and can be assigned.
-    /// </summary>
-    public enum Keys 
-    { 
-        //probably assigning the wrong numbers here, and yes
-        //it matters because of interpreter.inputbutton
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        Up = 1,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        Down = 2,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        Right = 3,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        Left = 4,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        A = 5,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        B = 6,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        C = 7,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        X = 8,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        Y = 9,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        Z = 10,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        R = 11,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        L = 12,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        Shift = 13,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        Ctrl = 14,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        Alt = 15,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        F5 = 16,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        F6= 17,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        F7 = 18,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        F8 = 19,
-        /// <summary>
-        /// An assignable key.
-        /// </summary>
-        F9 = 20
-    }
-
-    /// <summary>
     /// A class that handles input from the keyboard.
     /// </summary>
     public class Input
     {
-        const int NUM_OF_KEYS = 20;
         const int KEYHOLDTIME = 20;
         const int KEYCHECK = 4;
 
-        private static int[] held = new int[NUM_OF_KEYS];
 
         private static int dir = 0;
         private static int primaryDir = 0;
 
-        static Microsoft.Xna.Framework.Input.Keys[][] keys = new Microsoft.Xna.Framework.Input.Keys[NUM_OF_KEYS][];
-        static InputState[] states = new InputState[NUM_OF_KEYS];
-        static InputState[] oldStates = new InputState[NUM_OF_KEYS];
-
-        static Input()
-        {
-            string[][] keys = new string[20][] {
-                new string[] {"Up"},
-                new string[] {"Down"},
-                new string[] {"Right"},
-                new string[] {"Left"},
-                new string[] {"Z"},
-                new string[] {"Escape", "Num0"},
-                new string[] {"Space", "Enter"},
-                new string[] {"A"},
-                new string[] {"S"},
-                new string[] {"D"},
-                new string[] {"W"},
-                new string[] {"Q"},
-                new string[] {"RightShift", "LeftShift"},
-                new string[] {"RightControl", "LeftControl"},
-                new string[] {"RightAlt", "LeftAlt"},
-                new string[] {"F5"},
-                new string[] {"F6"},
-                new string[] {"F7"},
-                new string[] {"F8"},
-                new string[] {"F9"}};
-
-            GetKeys(keys);
-        }
+        static Dictionary<Keys, InputState> states = new Dictionary<Keys, InputState>();
+        static Dictionary<Keys, int> held = new Dictionary<Keys, int>();
 
         public static int MouseX { get { return Mouse.GetState().X; } }
         public static int MouseY { get { return Mouse.GetState().Y; } }
@@ -175,6 +57,20 @@ namespace Game_Player
         public static InputState MiddleMouseState { get; private set; }
         public static InputState RightMouseState { get; private set; }
 
+        static Input()
+        {
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            {
+                states[key] = InputState.Lifted;
+            }
+        }
+
+        public static Vector2 GetMousePosition()
+        {
+            MouseState mouse = Mouse.GetState();
+            return new Vector2(mouse.X, mouse.Y);
+        }
+
         /// <summary>
         /// Updates the Input Class. Generally this is done through <c>Globals.GameSystem.Update()</c>,
         /// and does not need to be explicitly called.
@@ -182,78 +78,26 @@ namespace Game_Player
         public static void Update()
         {
             MouseState mouseState = Mouse.GetState();
-            LeftMouseState = UpdateMouseState(mouseState.LeftButton, LeftMouseState);
+            LeftMouseState = UpdateInputState(mouseState.LeftButton == ButtonState.Pressed, LeftMouseState);
             //Console.WriteLine(LeftMouseState);
-            RightMouseState = UpdateMouseState(mouseState.RightButton, RightMouseState);
-            MiddleMouseState = UpdateMouseState(mouseState.MiddleButton, MiddleMouseState);
+            RightMouseState = UpdateInputState(mouseState.RightButton == ButtonState.Pressed, RightMouseState);
+            MiddleMouseState = UpdateInputState(mouseState.MiddleButton == ButtonState.Pressed, MiddleMouseState);
 
             MouseScroll = mouseState.ScrollWheelValue - lastMouseScroll;
             lastMouseScroll = mouseState.ScrollWheelValue;
 
-            Boolean pressed;
-            for (int i = 0; i < NUM_OF_KEYS; i++)
+            KeyboardState keystate = Keyboard.GetState();
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
             {
-                pressed = false;
-                for (int j = 0; j < keys[i].Length; j++)
-                {
-                    if (Keyboard.GetState().IsKeyDown(keys[i][j]))
-                        pressed = true;
-                }
-                if (pressed)
-                {
-                    if (states[i] == InputState.Lifted || states[i] == InputState.Released)
-                        states[i] = InputState.Triggered;
-                    else
-                        states[i] = InputState.Held;
-                }
-                else
-                {
-                    if (states[i] == InputState.Triggered || states[i] == InputState.Held)
-                        states[i] = InputState.Released;
-                    else
-                        states[i] = InputState.Lifted;
-                }
+                bool down = keystate.IsKeyDown(key);
+                states[key] = UpdateInputState(down, states[key]);
+                held[key] = down ? held[key] + 1 : 0;
             }
-            
-            for (int i = 0; i < oldStates.Length; i++)
-            {
-                if (oldStates[i] == states[i] && states[i] == InputState.Held)
-                    held[i]++;
-                else
-                    held[i] = 0;
-            }
-
-            Keys[] dirs = new Keys[9];
-            dirs[2] = Keys.Down;
-            dirs[4] = Keys.Left;
-            dirs[6] = Keys.Right;
-            dirs[8] = Keys.Up;
-            
-            for (int i = 2; i <= 8; i += 2)
-            {
-                if (Triggered(dirs[i]))
-                    primaryDir = i;
-            }
-
-            if (primaryDir != 0 && (Held(dirs[primaryDir]) || Triggered(dirs[primaryDir])))
-                dir = primaryDir;
-            else
-            {
-                primaryDir = 0;
-                dir = 0;
-                for (int i = 2; i <= 8; i += 2)
-                {
-                    if (Held(dirs[i]))
-                        dir = i;
-                }
-            }
-
-            oldStates = states;
         }
 
-        private static InputState UpdateMouseState(ButtonState buttonState, InputState oldState)
+        private static InputState UpdateInputState(bool isDown, InputState oldState)
         {
-            if (buttonState == ButtonState.Pressed)
+            if (isDown)
             {
                 if (oldState == InputState.Released || oldState == InputState.Lifted) return InputState.Triggered;
                 return InputState.Held;
@@ -265,53 +109,16 @@ namespace Game_Player
             }
         }
 
-        public static InputState State(int key)
+        public static InputState GetKeystate(Keys key)
         {
-            return states[key - 1];
-        }
-        /// <summary>
-        /// Gets the state of a given key.
-        /// </summary>
-        /// <param name="key">The key being checked.</param>
-        /// <returns>The <see cref="F:Game_Player.KeyStates">KeyStates</see>
-        /// of the given key.</returns>
-        public static InputState State(Keys key)
-        {       
-            return states[(int)key - 1];
+            return states[key];
         }
 
-        public static int HoldLength(int key)
-        {
-            return held[key - 1];
-        }
-        /// <summary>
-        /// The length a given key has been held down.
-        /// </summary>
-        /// <param name="key">The key to check.</param>
-        /// <returns>The length of held.</returns>
         public static int HoldLength(Keys key)
         {
-            return held[(int)key - 1];
+            return held[key];
         }
-
-        /// <summary>
-        /// Returns an integer (2, 4, 6, 8 or 0) depending on which of the Up, Down, Right and 
-        /// Left keys are being held down. The number corresponds to the numberpad direction
-        /// on a standard keyboard: 2 = Down, 4 = Left, 6 = Right, 8 = Up, and 0 indicated no
-        /// directional key is being pressed. Use this method to control sprite movement in 4
-        /// directions, etc. Note that this method will default to the lowest numbered direction
-        /// being held and will not indicate if other directional keys are being held.
-        /// </summary>
-        /// <returns>The directional integer.</returns>
-        public static int Dir4()
-        {
-            return dir;
-        }
-
-        public static bool Held(int key)
-        {
-            return State(key) == InputState.Held;
-        }
+        
         /// <summary>
         /// Indicates if the given key is in the Held state. This includes all time after the key is
         /// pressed and continues to be pressed.
@@ -321,13 +128,14 @@ namespace Game_Player
         /// <returns>The indicating boolean.</returns>
         public static Boolean Held(Keys key)
         { 
-            return State(key) == InputState.Held; 
+            return GetKeystate(key) == InputState.Held; 
         }
 
-        public static Boolean Triggered(int key)
+        public static Boolean Down(Keys key)
         {
-            return State(key) == InputState.Triggered;
-        }
+            return Held(key) || Triggered(key);
+        } 
+
         /// <summary>
         /// Indicates if the given key is in the Triggered state. This includes only the
         /// initial frame the key is pressed.
@@ -337,14 +145,9 @@ namespace Game_Player
         /// <returns>The indicating boolean.</returns>
         public static Boolean Triggered(Keys key)
         { 
-            return State(key) == InputState.Triggered; 
+            return GetKeystate(key) == InputState.Triggered; 
         }
 
-        public static Boolean Repeated(int key)
-        {
-            int hold = HoldLength(key);
-            return (hold % KEYCHECK == 0) && (hold > KEYHOLDTIME) || Triggered(key);
-        }
         /// <summary>
         /// This method is used to trigger an event while a key is being held. Instead of simply 
         /// returning whether the key is being held or not, (~60 times a second) it will return 
@@ -360,26 +163,25 @@ namespace Game_Player
             return (hold % KEYCHECK == 0) && (hold > KEYHOLDTIME) || Triggered(key);
         }
 
-        /// <summary>
-        /// This method loads a set of keybaord keys to associate with its collection
-        /// of Keys. from the Data class. This class is called by Game.System.GameStart()
-        /// and should not be called unless a manual reassignment of keys is needed.
-        /// </summary>
-        public static void GetKeys(string[][] getKeys)
+        public static Vector2 GetWASDDir()
         {
-            Microsoft.Xna.Framework.Input.Keys k = Microsoft.Xna.Framework.Input.Keys.None;
-            for (int j = 0; j < NUM_OF_KEYS; j++)
-            {
-                keys[j] = new Microsoft.Xna.Framework.Input.Keys[] { };
-                for (int i = 0; i <= 200; i++)
-                {
-                    if (Array.IndexOf(getKeys[j], (k + i).ToString()) != -1)
-                    {
-                        Array.Resize<Microsoft.Xna.Framework.Input.Keys>(ref keys[j], keys[j].Length + 1);
-                        keys[j][keys[j].Length - 1] = (k + i);
-                    }
-                }
-            }
+            return GetDir(Keys.W, Keys.A, Keys.S, Keys.D);
+        }
+
+        public static Vector2 GetArrowDir()
+        {
+            return GetDir(Keys.Up, Keys.Left, Keys.Down, Keys.Right);
+        }
+
+        private static Vector2 GetDir(Keys up, Keys left, Keys down, Keys right)
+        {
+            Vector2 point = new Vector2();
+            // Remember that up is -Y in screen coordinates
+            if (Down(up)) point.Y--;
+            if (Down(down)) point.Y++;
+            if (Down(left)) point.X--;
+            if (Down(right)) point.X++;
+            return point;
         }
     }
 }

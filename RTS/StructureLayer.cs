@@ -59,9 +59,7 @@ namespace RTS
         private void UpdateAddBuilding()
         {
             if (!IsPlacing) return;
-            MouseState mouse = Mouse.GetState();
-            Vector2 mousePos = new Vector2(mouse.X, mouse.Y);
-            Vector2 relativePos = Vector2.Transform(mousePos, Matrix.Invert(GetFullTransform()));
+            Vector2 relativePos = TransformScreenToLocalPoint(Input.GetMousePosition());
             int tileX = (int)Math.Floor(relativePos.X / TileSize);
             int tileY = (int)Math.Floor(relativePos.Y / TileSize);
             tileX -= addingBuilding.CellWidth / 2;
@@ -173,7 +171,6 @@ namespace RTS
                         tile.ScaleY = 1 / ScaleY;
                         AddChild(tile);
                         tileHighlights[i, j] = tile;
-                        Console.WriteLine(i);
                     }
                 }
             }

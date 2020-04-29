@@ -16,11 +16,18 @@ namespace Game_Player
 
         public Transformable Parent { get; private set; }
         
-        public float X, Y, Z;
-        public float CenterX, CenterY;
 
-        public float ScaleX = 1;
-        public float ScaleY = 1;
+        public Vector2 Position = new Vector2();
+        public Vector2 Scale = new Vector2(1, 1);
+        public Vector2 Center = new Vector2();
+        public float Z;
+
+        public float ScaleX { get { return Scale.X; } set { Scale.X = value; } }
+        public float ScaleY { get { return Scale.Y; } set { Scale.Y = value; } }
+        public float CenterX { get { return Center.X; } set { Center.X = value; } }
+        public float CenterY { get { return Center.Y; } set { Center.Y = value; } }
+        public float X { get { return Position.X; } set { Position.X = value; } }
+        public float Y { get { return Position.Y; } set { Position.Y = value; } }
 
         // 0 to 1
         public float Rotation;
@@ -76,6 +83,16 @@ namespace Game_Player
                 matrix *= Parent.GetFullTransform();
             }
             return matrix;
+        }
+
+        public Vector2 TransformScreenToLocalPoint(Vector2 point)
+        {
+            return Vector2.Transform(point, Matrix.Invert(GetFullTransform()));
+        }
+
+        public Vector2 TransformLocalToScreenPoint(Vector2 point)
+        {
+            return Vector2.Transform(point, GetFullTransform());
         }
     }
 }
